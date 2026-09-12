@@ -1,28 +1,26 @@
 """Shim-quality gate: the ``valley_ratio``.
 
-End-group quantification on a polyolefin lives or dies on one thing: the
-main-chain CH2 line is three or four orders of magnitude taller than every
-signal you actually want to measure.  A Lorentzian line has heavy tails, and a
-poorly shimmed line has heavier ones still, so the *foot* of the main-chain
-peak can spill into the neighbouring CH3 window and be integrated as if it
-were chain ends.  The spectrum looks fine; the number is inflated.
+The main-chain CH2 line is three or four orders of magnitude taller than every
+signal worth measuring.  A Lorentzian has heavy tails and a poorly shimmed line
+heavier ones, so the foot of the main-chain peak spills into the neighbouring
+CH3 window and is integrated as chain ends.  The spectrum looks fine; the
+number is inflated.
 
-``valley_ratio`` measures exactly that spill:
+``valley_ratio`` measures that spill:
 
     valley_ratio = (intensity at the lowest point between the CH3 maximum and
                     the main-chain maximum) / (main-chain maximum)
 
-On a well-shimmed spectrum the two peaks are resolved down to the noise and
-the ratio is small.  As the main-chain line broadens, the trough between the
-peaks lifts off the baseline and the ratio grows.  Rejecting spectra above a
-threshold throws away the ones whose CH3 integral is contaminated by
-main-chain tail, which is the failure mode that no amount of later arithmetic
-can undo.
+On a well-shimmed spectrum the peaks resolve down to the noise and the ratio is
+small; as the line broadens, the trough lifts off the baseline and the ratio
+grows.  Rejecting spectra above a threshold throws away the ones whose CH3
+integral is contaminated by main-chain tail, a failure no later arithmetic can
+undo.
 
-The threshold is empirical and belongs in the regions file, not in the code:
-it depends on nucleus, field, temperature, solvent and how much CH3 you expect.
-Set it by measuring a handful of spectra you trust and a handful you know are
-bad, then put the number where it separates them.
+The threshold is empirical and belongs in the regions file, since it depends on
+nucleus, field, temperature, solvent and how much CH3 you expect.  Measure a
+handful of spectra you trust and a handful you know are bad, then put the
+number where it separates them.
 """
 
 from __future__ import annotations
@@ -41,7 +39,7 @@ class ValleyRatio:
     """Result of one shim-quality measurement.
 
     ``passed`` is ``None`` when no threshold was supplied, and ``None`` also
-    when the ratio could not be measured -- an unmeasurable ratio is not a
+    when the ratio could not be measured, since an unmeasurable ratio is not a
     pass.
     """
 

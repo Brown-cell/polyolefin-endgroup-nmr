@@ -41,8 +41,8 @@ def analyze(dataset_path: str, config, kind: str = "auto") -> dict:
     """Read, process, QC, solvent-correct and quantify one dataset.
 
     Returns a flat row: metadata, QC, then the quantities.  Quantification
-    runs even when the QC gate fails -- the row carries ``qc_passed`` so the
-    caller can drop it -- because seeing the number you are rejecting is more
+    runs even when the QC gate fails (the row carries ``qc_passed`` so the
+    caller can drop it), because seeing the number you are rejecting is more
     useful than a blank.
     """
     acq = read_bruker(dataset_path) if kind == "bruker" else read_any(dataset_path)

@@ -2,13 +2,13 @@
 
 Two vendor paths are supported, both through ``nmrglue``:
 
-* **Bruker / TopSpin** -- a dataset is a *directory* holding an ``acqus`` file
-  plus a raw ``fid`` (1D) or ``ser`` (nD).  A notebook folder usually holds
-  several numbered sub-experiments (``1/``, ``2/``, ``3/`` ...), each of which
-  is its own dataset.  Read natively with :func:`nmrglue.bruker.read`.
-* **JEOL** -- exported as **JCAMP-DX** (``.jdx`` / ``.dx``).  Delta writes
-  JCAMP-DX from *File > Export*; the binary ``.jdf`` container is not read
-  here (see README, "JEOL datasets").
+* Bruker / TopSpin: a dataset is a *directory* holding an ``acqus`` file plus a
+  raw ``fid`` (1D) or ``ser`` (nD).  A notebook folder usually holds several
+  numbered sub-experiments (``1/``, ``2/``, ``3/`` ...), each its own dataset.
+  Read natively with :func:`nmrglue.bruker.read`.
+* JEOL: exported as JCAMP-DX (``.jdx`` / ``.dx``).  Delta writes JCAMP-DX from
+  *File > Export*; the binary ``.jdf`` container is not read here (see the
+  README).
 
 Both readers return an :class:`Acquisition`: the vendor dictionary, the data
 array, and a small normalised metadata dict.  Everything downstream
@@ -70,8 +70,8 @@ def find_bruker_experiments(root: str) -> list[tuple[str, str]]:
     """Walk ``root`` and return every Bruker dataset below it.
 
     Returns a sorted list of ``(absolute_dir, key)`` where ``key`` is the path
-    relative to ``root`` with forward slashes -- a stable identifier to use as
-    a row label in output tables.
+    relative to ``root`` with forward slashes, a stable identifier to use as a
+    row label in output tables.
     """
     found: list[tuple[str, str]] = []
     for dirpath, _dirnames, filenames in os.walk(root):

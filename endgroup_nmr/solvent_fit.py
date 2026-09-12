@@ -8,17 +8,16 @@ of the line.
 
 The fix is to model the interloper and subtract it before integrating:
 
-* fit a **phase-mixed Lorentzian** -- ``cos(phi) * absorption + sin(phi) *
-  dispersion`` -- plus a local linear baseline,
+* fit a phase-mixed Lorentzian, ``cos(phi) * absorption + sin(phi) *
+  dispersion``, plus a local linear baseline,
 * fit it on windows that *exclude* the end-group window itself (the solvent
   core on one side, a short anchor on the far side of the window), so the
   signal being measured never pulls the model,
 * subtract the fitted line shape from the spectrum,
 * integrate the end-group window on the corrected trace.
 
-Keeping the fit windows off the peak of interest is what makes this honest.
-If you fit across the window, the model will happily absorb the signal and
-report that there is nothing there.
+Fit across the window instead and the model absorbs the signal and reports that
+there is nothing there.
 """
 
 from __future__ import annotations
@@ -172,7 +171,7 @@ def subtract_solvent_lines(
     ``include_baseline=False`` (the default) subtracts only the line shape.
     The local linear term is part of the *fit*, where it soaks up whatever
     offset remains in the fit windows, but it is not extrapolated across the
-    whole spectrum -- doing that would tilt regions far from the fit.
+    whole spectrum, which would tilt regions far from the fit.
 
     Returns the corrected spectrum and the fits, in declaration order.  A
     config with no ``solvent_lines`` block returns the spectrum unchanged.

@@ -1,9 +1,9 @@
 """Quantify polyolefin chain-end groups from 1H NMR.
 
-Read a raw dataset (Bruker directory, or a JCAMP-DX export from JEOL Delta),
+Read a raw dataset (a Bruker directory, or a JCAMP-DX export from JEOL Delta),
 work it up, gate it on shim quality, subtract an overlapping residual solvent
-line, and turn region integrals into ends per chain and a number-average
-molar mass.
+line, and turn region integrals into ends per chain and a number-average molar
+mass.
 
 Typical use::
 
@@ -21,8 +21,8 @@ Typical use::
     result = quantify(corrected, config)
     print(result.ends_per_chain, result.mn)
 
-All chemical shifts live in the regions file.  There is not one hard-coded
-ppm value in this package.
+Every chemical shift lives in the regions file; there is no hard-coded ppm
+value in this package.
 """
 
 from .processing import (

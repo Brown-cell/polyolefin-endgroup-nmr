@@ -17,14 +17,14 @@ From there the arithmetic is short:
     ends_per_chain = sum of amount over chain_end_groups / chains
     Mn             = repeat_unit_mass * carbons_per_chain + end_group_mass
 
-``ends_per_chain`` needs an independent count of chains, and there is no way
-to get one from the spectrum alone -- you have to assume something.  The
-default assumption in the shipped regions file is the textbook one for a
-polyolefin terminated by beta-hydride elimination: **exactly one unsaturated
-terminus per chain**.  A perfectly linear chain then gives 2.0 (one saturated
-end plus one unsaturated end), and the departure from 2.0 is the diagnostic.
-Change ``chain_count_groups`` if your chemistry counts chains some other way;
-the number means nothing without knowing which assumption produced it.
+``ends_per_chain`` needs an independent count of chains and the spectrum alone
+cannot give you one, so you have to assume something.  The default assumption
+in the shipped regions file is the textbook one for a polyolefin terminated by
+beta-hydride elimination: **exactly one unsaturated terminus per chain**.  A
+perfectly linear chain then gives 2.0 (one saturated end plus one unsaturated
+end), and the departure from 2.0 is the diagnostic.  Change
+``chain_count_groups`` if your chemistry counts chains some other way; the
+number means nothing without the assumption behind it.
 """
 
 from __future__ import annotations

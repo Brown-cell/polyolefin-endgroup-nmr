@@ -1,20 +1,19 @@
-"""End-to-end demo on a synthetic spectrum -- no instrument data needed.
+"""End-to-end demo on a synthetic spectrum, with no instrument data needed.
 
 Builds a 1H spectrum of a linear polyolefin from Lorentzians at the textbook
-shifts, with the three features that make real end-group analysis awkward:
+shifts, with the features that make real end-group analysis awkward:
 
 * a main-chain CH2 line ~5000x taller than any end-group signal, sitting on a
   broad skirt,
-* a residual solvent line overlapping the vinyl -CH= window, phased so its
-  tail is partly dispersive (the reason naive integration of that window can
-  go negative),
+* a residual solvent line overlapping the vinyl -CH= window, phased so its tail
+  is partly dispersive (the reason naive integration of that window can go
+  negative),
 * noise.
 
-Then it runs the library on two copies of that spectrum -- one well shimmed,
-one with a deliberately broadened main-chain line -- and prints what the
-valley_ratio gate, the solvent subtraction and the quantification make of
-each.  Because the spectrum was built from known amounts, the recovered
-numbers can be compared against the truth at the bottom of the output.
+It then runs the library on two copies, one well shimmed and one with a
+broadened main-chain line, and prints what the valley_ratio gate, the solvent
+subtraction and the quantification make of each.  The spectrum was built from
+known amounts, so the last table compares the recovered numbers against them.
 
 Run it from the repository root:
 
@@ -235,8 +234,8 @@ def main() -> int:
         "   That is the point of the gate rather than an argument against it: valley_ratio\n"
         "   measures the size of exactly this leak, and the two cases differ by more than\n"
         "   two orders of magnitude in it. Below the threshold the CH3 window reads high by\n"
-        "   tens of per cent and ends/chain with it, while Mn and the chain length -- which\n"
-        "   rest on the main-chain and unsaturation windows, not on CH3 -- stay within a\n"
+        "   tens of per cent and ends/chain with it, while Mn and the chain length (which\n"
+        "   rest on the main-chain and unsaturation windows, not on CH3) stay within a\n"
         "   couple of per cent. Above the threshold the CH3 window is mostly main-chain\n"
         "   tail and every quantity is out by roughly a factor of three, chain length and\n"
         "   Mn included. So the gate does not certify CH3 as unbiased; it separates a bias\n"

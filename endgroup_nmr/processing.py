@@ -2,19 +2,19 @@
 
 The 1D workup is the standard nmrglue recipe, in this order:
 
-1. **remove the digital filter** (Bruker only -- ``grpdly`` group delay, which
+1. remove the digital filter (Bruker only: the ``grpdly`` group delay, which
    otherwise wraps the first points of the FID and ruins the baseline),
-2. **zero-fill** to the next power of two, then double it,
-3. **FFT**,
-4. **reverse the axis** -- see :func:`fourier_transform` for why this step is
-   not optional on Bruker data,
-5. **automatic phase correction** (ACME entropy minimisation),
-6. **discard the imaginary channel**,
-7. **polynomial baseline correction**,
-8. **ppm calibration** against a line of known shift (usually the residual
-   solvent line).
+2. zero-fill to the next power of two, then double it,
+3. FFT,
+4. reverse the axis, which is not optional on Bruker data
+   (see :func:`fourier_transform`),
+5. automatic phase correction (ACME entropy minimisation),
+6. discard the imaginary channel,
+7. polynomial baseline correction,
+8. ppm calibration against a line of known shift, usually the residual solvent
+   line.
 
-Every step is a separate function so a caller who has already phased their
+Every step is a separate function, so a caller who has already phased their
 data in the vendor software can skip straight to :func:`calibrate_ppm`.
 """
 
@@ -83,14 +83,13 @@ class Spectrum:
 def fourier_transform(acq: Acquisition, zero_fill: bool = True) -> np.ndarray:
     """FID -> complex spectrum, including the axis reversal.
 
-    **Why the reversal step exists.**  ``nmrglue.proc_base.fft`` applies the
-    plain numpy FFT, which orders the output by increasing frequency index.
-    Bruker digitises with the opposite sense, so the transform comes out as a
-    *mirror image* of the spectrum: the aromatic region lands where the
-    aliphatic region belongs.  It is a genuinely nasty trap, because a mirrored
-    polyolefin spectrum still looks entirely plausible -- one tall aliphatic
-    peak with small satellites -- and every integral you take from it is wrong
-    while nothing raises an error.  ``proc_base.rev`` puts the axis back.
+    ``nmrglue.proc_base.fft`` applies the plain numpy FFT, which orders the
+    output by increasing frequency index.  Bruker digitises with the opposite
+    sense, so the transform comes out as a *mirror image* of the spectrum: the
+    aromatic region lands where the aliphatic region belongs.  A mirrored
+    polyolefin spectrum still looks entirely plausible (one tall aliphatic peak
+    with small satellites), nothing raises an error, and every integral taken
+    from it is wrong.  ``proc_base.rev`` puts the axis back.
     """
     if acq.data is None:
         raise ValueError("acquisition carries no 1D data to transform")
