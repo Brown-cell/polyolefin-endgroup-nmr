@@ -1,0 +1,130 @@
+{
+  "_comment": [
+    "Integration windows for 1H NMR end-group analysis of a linear polyolefin.",
+    "Copy this file, edit it for your solvent/temperature/field, and pass it with --regions.",
+    "The shifts below are the textbook polyethylene assignments; every one of them moves a",
+    "little with solvent and temperature, so calibrate against your own spectrum before use.",
+    "No chemical shift is hard-coded anywhere in the package: this file is the only source."
+  ],
+
+  "nucleus": "1H",
+
+  "reference": {
+    "_comment": [
+      "Line used to calibrate the ppm axis. The default is the residual protio line of",
+      "1,1,2,2-tetrachloroethane-d2, the usual high-temperature solvent for polyolefins",
+      "(5.91 ppm). Use 7.26 for CDCl3, 5.32 for CD2Cl2, 7.16 for C6D6.",
+      "Set 'ppm' to null to keep the spectrometer's own referencing."
+    ],
+    "label": "residual solvent line",
+    "ppm": 5.91,
+    "search_halfwidth_ppm": 0.6
+  },
+
+  "regions": [
+    {
+      "name": "main_chain_CH2",
+      "low": 1.10,
+      "high": 1.45,
+      "group": "backbone",
+      "protons_per_group": 2,
+      "carbons_per_group": 1,
+      "role": "backbone",
+      "note": "the (CH2)n envelope, ~1.3 ppm; the intensity reference for everything else"
+    },
+    {
+      "name": "CH3",
+      "low": 0.75,
+      "high": 1.00,
+      "group": "methyl_end",
+      "protons_per_group": 3,
+      "carbons_per_group": 1,
+      "role": "chain_end",
+      "note": "saturated chain ends, ~0.9 ppm. Short-chain branches also land here, so on a branched sample this window counts branch methyls too, not just ends"
+    },
+    {
+      "name": "vinylidene_CH2",
+      "low": 4.60,
+      "high": 4.80,
+      "group": "vinylidene_end",
+      "protons_per_group": 2,
+      "carbons_per_group": 2,
+      "role": "chain_end",
+      "note": "1,1-disubstituted olefin C=CH2, ~4.7 ppm"
+    },
+    {
+      "name": "vinyl_CH2",
+      "low": 4.90,
+      "high": 5.00,
+      "group": "vinyl_end",
+      "protons_per_group": 2,
+      "carbons_per_group": 2,
+      "role": "chain_end",
+      "note": "terminal vinyl -CH=CH2, the two olefinic CH2 protons"
+    },
+    {
+      "name": "vinyl_CH",
+      "low": 5.70,
+      "high": 5.88,
+      "group": "vinyl_end",
+      "protons_per_group": 1,
+      "carbons_per_group": 2,
+      "role": "chain_end",
+      "note": "the single internal proton of the same vinyl end; upper edge stops short of the residual solvent line at 5.91"
+    },
+    {
+      "name": "internal_olefin",
+      "low": 5.30,
+      "high": 5.50,
+      "group": "internal_olefin",
+      "protons_per_group": 2,
+      "carbons_per_group": 2,
+      "role": "in_chain",
+      "note": "disubstituted -CH=CH- in the chain: unsaturation that is not a chain end, so it is counted in Mn but not in ends/chain"
+    }
+  ],
+
+  "quantification": {
+    "_comment": [
+      "chain_count_groups is the assumption that turns integrals into a chain count.",
+      "The default says every chain carries exactly one unsaturated terminus, which is what",
+      "beta-hydride elimination gives you. A perfectly linear chain then has ends/chain = 2.0",
+      "(one saturated end, one unsaturated end) and the departure from 2.0 is the finding.",
+      "Mn = repeat_unit_mass * (carbons per chain) + end_group_mass. For CH3-(CH2)n-CH=CH2 the",
+      "formula is exactly (CH2)m, so end_group_mass is 0 and the carbon count carries it all."
+    ],
+    "backbone_group": "backbone",
+    "chain_count_groups": ["vinyl_end", "vinylidene_end"],
+    "chain_end_groups": ["methyl_end", "vinyl_end", "vinylidene_end"],
+    "repeat_unit_mass": 14.0266,
+    "end_group_mass": 0.0
+  },
+
+  "qc": {
+    "valley_ratio": {
+      "_comment": [
+        "Shim-quality gate. Height of the trough between the CH3 maximum and the main-chain",
+        "maximum, divided by the main-chain maximum. A broad main-chain line lifts the trough",
+        "and spills into the CH3 window. max_ratio is empirical: measure spectra you trust and",
+        "spectra you know are bad, and put the threshold where it separates them."
+      ],
+      "main_chain_region": "main_chain_CH2",
+      "endgroup_region": "CH3",
+      "max_ratio": 0.05
+    }
+  },
+
+  "solvent_lines": [
+    {
+      "_comment": [
+        "One residual solvent line to fit and subtract before integrating an end-group window",
+        "it overlaps. fit_windows must exclude the window being protected, or the model will",
+        "absorb the signal you are trying to measure."
+      ],
+      "applies_to": "vinyl_CH",
+      "center_bounds": [5.85, 6.00],
+      "fit_windows": [[5.90, 6.40], [5.55, 5.68]],
+      "max_hwhm_ppm": 0.2
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+
+# Local configuration and results
+.env
+regions.json
+*.csv
+!regions.example.json
+
+# Spectrometer data must never be committed to this repository
+data/
+raw/
+*.jdx
+*.jdf
+fid
+ser
