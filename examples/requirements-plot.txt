@@ -1,0 +1,3 @@
+# Only for examples/plot_demo.py, which draws docs/demo.png.
+# The package itself does not import matplotlib.
+matplotlib>=3.7
